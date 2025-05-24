@@ -6,11 +6,11 @@ function App() {
 <div className="font-sans min-h-screen bg-white flex flex-col items-center">
 
 
-      {/* Sección de adopción de mascotas */}
+     
 
       <div className="container mx-auto px-4 py-8">
 
-        {/* Hero Section */}
+        
         <section className="text-center py-12">
           <h1 className="text-4xl font-bold text-gray-800 mb-6">Encuentra a tu compañero perfecto</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
@@ -29,16 +29,16 @@ function App() {
 
         <div className="border-t border-gray-200 my-8"></div>
 
-        {/* Featured Pets Section */}
+       
         <section className="py-8">
           <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Mascotas Destacadas</h2>
           <p className="text-gray-600 text-center mb-12">
             Estas adorables mascotas están esperando encontrar un hogar amoroso.
           </p>
 
-          {/* Tarjetas de mascotas */}
+          
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Ejemplo de tarjeta de mascota */}
+          
             <div className="bg-white rounded-lg shadow-md overflow-hidden">
               <div className="h-48 bg-gray-200"></div>
               <div className="p-4">
