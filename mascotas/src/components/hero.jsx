@@ -19,7 +19,7 @@ const Hero = () => {
     <section className="bg-[#fef6ee] w-full py-12">
       <div className="max-w-7xl mx-auto px-6 w-full">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-          {/* Texto */}
+
           <div className="md:w-1/2 text-left">
             <h1 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
               Encuentra a tu compañero perfecto
@@ -38,7 +38,6 @@ const Hero = () => {
             </div>
           </div>
 
-          {/* Imagen */}
           <div className="md:w-1/2 w-full flex justify-center">
             {isValidImageUrl(mascotaAleatoria.imagen) && !imageError ? (
               <img

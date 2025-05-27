@@ -14,8 +14,11 @@ const PetCard = ({ mascota }) => {
   }, [mascota.imagen]);
 
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden w-72">
-      {/* Imagen */}
+    <div className="bg-white rounded-xl shadow-md overflow-hidden w-72 
+    hover:shadow-lg transition-all duration-300 
+    hover:opacity-90 cursor-pointer
+    transform hover:scale-[1.05]">
+    
       <div className="relative bg-gray-100 h-48">
         {isValidImageUrl(mascota.imagen) && !imageError ? (
           <img
@@ -37,7 +40,6 @@ const PetCard = ({ mascota }) => {
         </span>
       </div>
 
-      {/* Contenido */}
       <div className="p-4">
         <h3 className="text-lg font-semibold text-gray-900">{mascota.nombre}</h3>
         <p className="text-sm text-gray-500 mb-2">📍 {mascota.ubicacion}</p>

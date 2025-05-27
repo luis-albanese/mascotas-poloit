@@ -1,16 +1,14 @@
 import React from 'react';
-import Header from '../components/header';
 import PetCard from '../components/card';
 import mascotas from '../utils/mascotas';
 import Hero from '../components/hero';
+import WhyAdopt from '../components/WhyAdopt';
 
 
 function Home() {
     return (
 
         <div className="font-sans min-h-screen bg-white flex flex-col items-center">
-
-            <Header />
 
             <Hero />
 
@@ -28,6 +26,8 @@ function Home() {
                     ))}
                 </div>
             </section>
+
+            <WhyAdopt/>
 
         </div>
 
