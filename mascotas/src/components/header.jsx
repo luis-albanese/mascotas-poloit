@@ -14,7 +14,7 @@ const Header = () => {
       
         <nav className="hidden md:flex space-x-8 text-base font-medium text-gray-700">
           <a href="/" className="dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Inicio</a>
-          <a href="#" className=" dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Mascotas</a>
+          <a href="/mascotas" className=" dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Mascotas</a>
           <a href="#" className="dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Sobre Nosotros</a>
         </nav>
 

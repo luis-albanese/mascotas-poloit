@@ -8,7 +8,6 @@ const PetDetail = () => {
   const [mascota, setMascota] = useState(null);
 
   useEffect(() => {
-    // Simulación: buscá la mascota desde un array local
     const mascotas = JSON.parse(localStorage.getItem('mascotas')) || [];
 
     const encontrada = mascotas.find((m) => m.id.toString() === id);
@@ -21,7 +20,6 @@ const PetDetail = () => {
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8">
-      {/* Imágenes */}
       <div>
         <div className="bg-gray-200 h-64 rounded-xl flex items-center justify-center overflow-hidden mb-4">
           {mascota.imagen ? (
@@ -46,7 +44,6 @@ const PetDetail = () => {
         </div>
       </div>
 
-      {/* Info de la mascota */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <h2 className="text-2xl font-bold text-gray-900">{mascota.nombre}</h2>
@@ -58,7 +55,6 @@ const PetDetail = () => {
           <MapPin className="w-4 h-4 mr-1" /> {mascota.ubicacion}
         </p>
 
-        {/* Edad y raza */}
         <div className="grid grid-cols-2 gap-4 mt-4">
           <div className="bg-orange-50 rounded-lg p-4">
             <div className="text-sm text-gray-500 flex items-center gap-1">
@@ -74,7 +70,6 @@ const PetDetail = () => {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="flex border-b mt-6">
           {['sobre', 'detalles', 'dueño'].map((tab) => (
             <button
@@ -91,7 +86,6 @@ const PetDetail = () => {
           ))}
         </div>
 
-        {/* Contenido del tab */}
         {activeTab === 'sobre' && (
           <p className="text-gray-700 text-base">{mascota.descripcion}</p>
         )}
@@ -108,7 +102,6 @@ const PetDetail = () => {
           </div>
         )}
 
-        {/* Botones */}
         <div className="mt-6 space-y-3">
           <a
             href={`https://wa.me/${mascota.whatsapp || '1234567890'}`}

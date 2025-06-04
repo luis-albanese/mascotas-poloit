@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import mascotas from '../utils/mascotas';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const mascotaAleatoria = mascotas[Math.floor(Math.random() * mascotas.length)];
@@ -29,12 +30,17 @@ const Hero = () => {
               Nuestra plataforma conecta mascotas que necesitan un hogar con personas que buscan un nuevo amigo.
             </p>
             <div className="flex gap-4">
-              <button className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-200">
+              <Link
+                to="/mascotas"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-3 px-6 rounded-lg transition duration-200"
+              >
                 Ver Mascotas
-              </button>
-              <button className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-6 border border-gray-300 rounded-lg transition duration-200">
+              </Link>
+              <Link
+              to="/register" className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-3 px-6 border border-gray-300 rounded-lg transition duration-200"
+              >
                 Registrarse
-              </button>
+                </Link>
             </div>
           </div>
 
@@ -45,9 +51,8 @@ const Hero = () => {
                 alt={mascotaAleatoria.nombre}
                 onLoad={() => setImageLoaded(true)}
                 onError={() => setImageError(true)}
-                className={`rounded-xl w-full max-w-md shadow-lg object-cover transition-opacity duration-300 h-[300px] md:h-[350px] ${
-                  imageLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
+                className={`rounded-xl w-full max-w-md shadow-lg object-cover transition-opacity duration-300 h-[300px] md:h-[350px] ${imageLoaded ? 'opacity-100' : 'opacity-0'
+                  }`}
               />
             ) : (
               <div className="w-full max-w-md h-[300px] md:h-[350px] bg-gray-200 rounded-xl flex items-center justify-center text-gray-500">
