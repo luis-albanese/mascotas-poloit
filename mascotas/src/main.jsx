@@ -4,18 +4,22 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/header.jsx';
 import Footer from './components/footer.jsx';
 import Home from './pages/home.jsx';
-import Login from './pages/login.jsx'; 
+import Login from './pages/login.jsx';
 import Register from './pages/register.jsx';
 import PetDetail from './pages/mascota.jsx';
 import MascotasPage from './pages/mascotas.jsx';
 import AboutUs from './pages/aboutUs.jsx';
+import Dashboard from './pages/dashboard.jsx';
+import ProtectedRoute from './components/protectedRoute.jsx';
+import Error404 from './pages/error404.jsx';
+
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <Header />
-      
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
@@ -23,8 +27,17 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/mascota/:id" element={<PetDetail />} />
         <Route path="/mascotas" element={<MascotasPage />} />
         <Route path="/sobre-nosotros" element={<AboutUs />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Error404 />} />
       </Routes>
-      
+
       <Footer />
     </BrowserRouter>
   </React.StrictMode>

@@ -20,18 +20,22 @@ const Header = () => {
   };
 
   const token = localStorage.getItem("accessToken");
-
-if (token) {
-  try {
-    const decoded = jwtDecode(token);
-    console.log("Token decodificado:", decoded); // 👈 Esto muestra todo
-  } catch (error) {
-    console.error("Token inválido:", error);
+  if (token) {
+    try {
+      const decoded = jwtDecode(token);  // Decodificando el token
+      console.log("Token decodificado:", decoded);  // Aquí debería aparecer 'rol'
+      const userRole = decoded.rol;  // Esto debería devolver 'ADMIN' o 'USER'
+      console.log("Rol del usuario:", userRole);  // Verifica que se esté mostrando el rol correctamente
+    } catch (error) {
+      console.error("Token inválido:", error);
+    }
   }
-}
+
 
   const user = getUserFromToken();
   const isLoggedIn = !!user;
+
+  const userRole = user ? user.rol : null; // Accedemos al rol (ADMIN o USER)
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -62,7 +66,16 @@ if (token) {
             <>
               <span className="text-gray-700 dark:text-white font-semibold hidden md:inline">
                 👤 ¡Hola, {user.name}!
+                {userRole === 'ADMIN' ? " (Administrador)" : " (Usuario)"}
               </span>
+              {userRole === 'ADMIN' && (
+                <Link
+                  to="/dashboard"
+                  className="hidden md:inline-block font-semibold bg-orange-500 hover:opacity-70 text-white text-base px-4 py-2 rounded-lg transition-colors duration-200"
+                >
+                  Dashboard
+                </Link>
+              )}
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 font-semibold bg-gray-100 dark:bg-gray-700 dark:text-white px-4 py-2 rounded-lg hover:bg-gray-200 transition"
