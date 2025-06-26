@@ -1,9 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PetCard from '../components/card';
 import { useMascotas } from "../utils/useMascotas";
 
 const MascotasPage = () => {
   const { mascotas, loading, error, isImagePreloaded } = useMascotas();
+  const [currentPage, setCurrentPage] = useState(1);
+  const mascotasPerPage = 8;
+
+  // Calcular las mascotas para la página actual
+  const indexOfLastMascota = currentPage * mascotasPerPage;
+  const indexOfFirstMascota = indexOfLastMascota - mascotasPerPage;
+  const currentMascotas = mascotas.slice(indexOfFirstMascota, indexOfLastMascota);
+  const totalPages = Math.ceil(mascotas.length / mascotasPerPage);
 
   if (loading) {
     return (
@@ -37,7 +45,7 @@ const MascotasPage = () => {
       <p className="mb-6 text-gray-700 dark:text-gray-300">Encontrá tu compañero perfecto</p>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8 w-full max-w-8xl mx-auto">
-        {mascotas.map((mascota) => (
+        {currentMascotas.map((mascota) => (
           <PetCard
             key={mascota.id}
             mascota={mascota}
@@ -45,6 +53,39 @@ const MascotasPage = () => {
           />
         ))}
       </div>
+
+      {/* Paginación */}
+      {mascotas.length > mascotasPerPage && (
+        <div className="flex justify-center mt-8">
+          <nav className="inline-flex rounded-md shadow">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className={`px-4 py-2 rounded-l-md border ${currentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white hover:bg-gray-50 text-gray-700'}`}
+            >
+              Anterior
+            </button>
+            
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-4 py-2 border-t border-b ${currentPage === page ? 'bg-orange-500 text-white' : 'bg-white hover:bg-gray-50 text-gray-700'}`}
+              >
+                {page}
+              </button>
+            ))}
+            
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className={`px-4 py-2 rounded-r-md border ${currentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-white hover:bg-gray-50 text-gray-700'}`}
+            >
+              Siguiente
+            </button>
+          </nav>
+        </div>
+      )}
     </main>
   );
 };

@@ -11,7 +11,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:3001/api/users/login", {
+      const res = await fetch("http://localhost:2010/api/users/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -20,8 +20,13 @@ const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
-        // Guardar usuario en localStorage
-        localStorage.setItem("user", JSON.stringify(data.user));
+        // Guardar tokens en localStorage
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+
+        console.log("✅ Usuario logueado correctamente");
+
+        // Redirigir a la página principal
         navigate("/");
       } else {
         alert(data.error || "Error al iniciar sesión");

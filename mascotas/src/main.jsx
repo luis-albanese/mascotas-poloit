@@ -8,6 +8,7 @@ import Login from './pages/login.jsx';
 import Register from './pages/register.jsx';
 import PetDetail from './pages/mascota.jsx';
 import MascotasPage from './pages/mascotas.jsx';
+import AboutUs from './pages/aboutUs.jsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Route path="/register" element={<Register />} />
         <Route path="/mascota/:id" element={<PetDetail />} />
         <Route path="/mascotas" element={<MascotasPage />} />
+        <Route path="/sobre-nosotros" element={<AboutUs />} />
       </Routes>
       
       <Footer />
