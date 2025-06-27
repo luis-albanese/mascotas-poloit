@@ -1,12 +1,13 @@
 import React from 'react';
 import { CheckCircle } from "lucide-react";
+import { Link } from 'react-router-dom';
 
 const WhyAdopt = () => {
   return (
     <section className="bg-[#fef6ee] w-full py-12">
       <div className="max-w-7xl mx-auto px-6 w-full">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-          
+
           <div className="md:w-1/2 text-left">
             <h2 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
               ¿Por qué adoptar?
@@ -29,6 +30,14 @@ const WhyAdopt = () => {
                 Ganas un compañero leal
               </li>
             </ul>
+
+            {/* Agregamos el botón para redirigir a la página de adopción */}
+            <Link
+              to="/mascotas-adopcion"
+              className="inline-block bg-orange-500 text-white px-6 py-3 mt-6 rounded-lg hover:bg-orange-600 transition"
+            >
+              Pon en adopción una mascota
+            </Link>
           </div>
 
           <div className="md:w-1/2 w-full flex justify-center">

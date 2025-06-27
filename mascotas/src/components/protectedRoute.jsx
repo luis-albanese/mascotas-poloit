@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }) => {
     }
 
     if (decoded.rol !== 'ADMIN') {
-      return <Navigate to="/" replace />;
+      return <Navigate to="*" replace />;
     }
 
     return children;

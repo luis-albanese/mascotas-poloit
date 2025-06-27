@@ -11,6 +11,8 @@ import MascotasPage from './pages/mascotas.jsx';
 import AboutUs from './pages/aboutUs.jsx';
 import Dashboard from './pages/dashboard.jsx';
 import ProtectedRoute from './components/protectedRoute.jsx';
+import ProtectedRoute2 from './components/protectedRoute2.jsx';
+import MascotasAdopcion from "./pages/mascotasAdopcion.jsx";
 import Error404 from './pages/error404.jsx';
 
 import './index.css';
@@ -33,6 +35,14 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <ProtectedRoute>
               <Dashboard />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/mascotas-adopcion"
+          element={
+            <ProtectedRoute2>
+              <MascotasAdopcion />
+            </ProtectedRoute2>
           }
         />
         <Route path="*" element={<Error404 />} />
