@@ -4,7 +4,7 @@
 
 ## 🏠 Pantalla de inicio
 
-![Home](public/home.png)
+![Home](mascotas/public/home.png)
 
 
 ## 🐶 Mascotas en Adopción
