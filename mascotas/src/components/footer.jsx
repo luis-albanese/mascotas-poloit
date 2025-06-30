@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="flex gap-4">
           <a href="#" className="hover:underline">Términos</a>
           <a href="#" className="hover:underline">Privacidad</a>
-          <a href="#" className="hover:underline">Contacto</a>
+          <a href="https://www.instagram.com/petadopt_ok/" className="hover:underline">Contacto</a>
         </div>
       </div>
     </footer>

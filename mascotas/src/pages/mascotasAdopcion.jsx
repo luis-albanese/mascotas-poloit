@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
@@ -9,6 +9,19 @@ const MascotasAdopcion = () => {
   const [edad, setEdad] = useState('');
   const [tamaño, setTamaño] = useState('');
   const [imagen, setImagen] = useState('');
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [mensajeModal, setMensajeModal] = useState('');
+  const [tipoModal, setTipoModal] = useState('');
+
+
+  useEffect(() => {
+    if (mostrarModal) {
+      const timer = setTimeout(() => setMostrarModal(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [mostrarModal]);
+
+
 
   const validateForm = () => {
     if (!/^[a-zA-Z\s]+$/.test(nombre) || nombre.length > 20) {
@@ -31,16 +44,18 @@ const MascotasAdopcion = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const validationError = validateForm();
     if (validationError) {
-      alert(validationError);
+      setMensajeModal(validationError);
+      setTipoModal('error');
+      setMostrarModal(true);
       return;
     }
-
-    const token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken'); 
     if (!token) {
-      alert('Debes iniciar sesión para enviar una mascota.');
+      setMensajeModal('Debes iniciar sesión para enviar una mascota.');
+      setTipoModal('error');
+      setMostrarModal(true);
       return;
     }
 
@@ -49,12 +64,15 @@ const MascotasAdopcion = () => {
       const decoded = jwtDecode(token);
       userId = decoded.id;
     } catch (err) {
-      alert('Token inválido. Inicia sesión nuevamente.');
+      setMensajeModal('Token inválido. Inicia sesión nuevamente.');
+      setTipoModal('error');
+      setMostrarModal(true);
       return;
     }
 
     try {
       await axios.post('http://localhost:2010/api/pets/create', {
+
         name: nombre,
         race: raza,
         color: color,
@@ -63,16 +81,24 @@ const MascotasAdopcion = () => {
         image: imagen,
         userId: userId,
       });
-      alert('Mascota puesta en adopción con éxito');
-      // Limpiar el formulario si querés
+      setMensajeModal('Mascota puesta en adopción con éxito');
+      setTipoModal('success');
+      setMostrarModal(true);
       setNombre('');
       setRaza('');
       setColor('');
       setEdad('');
       setTamaño('');
       setImagen('');
+      setTimeout(() => {
+        window.location.href = '/mascotas';
+      }, 3000); // espera 1 segundo y redirige a /mascotas
+      
+      
     } catch (err) {
-      alert('Error al poner la mascota en adopción');
+      setMensajeModal('Error al poner la mascota en adopción');
+      setTipoModal('error');
+      setMostrarModal(true);
     }
   };
 
@@ -140,7 +166,7 @@ const MascotasAdopcion = () => {
         </div>
 
         <div>
-          <label className="block font-semibold">Imagen (URL)</label>
+          <label className="block font-semibold">Imagen (solo acepta URL con terminación en .png, .jpg y variables).</label>
           <input
             type="text"
             className="w-full p-3 mt-2 border rounded-lg"
@@ -152,11 +178,30 @@ const MascotasAdopcion = () => {
 
         <button
           type="submit"
-          className="bg-blue-500 text-white px-6 py-3 mt-6 rounded-lg hover:bg-blue-600 transition"
+          className="bg-orange-500 text-white px-6 py-3 mt-6 rounded-lg hover:bg-orange-600 transition"
         >
           Poner en adopción
         </button>
       </form>
+      {mostrarModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
+            <h2 className="text-lg font-semibold mb-4">
+              {tipoModal === 'success' ? '¡Éxito!' : 'Error'}
+            </h2>
+            <p className="mb-4">{mensajeModal}</p>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setMostrarModal(false)}
+                className="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

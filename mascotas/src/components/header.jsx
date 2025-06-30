@@ -19,23 +19,11 @@ const Header = () => {
     }
   };
 
-  const token = localStorage.getItem("accessToken");
-  if (token) {
-    try {
-      const decoded = jwtDecode(token);  // Decodificando el token
-      console.log("Token decodificado:", decoded);  // Aquí debería aparecer 'rol'
-      const userRole = decoded.rol;  // Esto debería devolver 'ADMIN' o 'USER'
-      console.log("Rol del usuario:", userRole);  // Verifica que se esté mostrando el rol correctamente
-    } catch (error) {
-      console.error("Token inválido:", error);
-    }
-  }
-
 
   const user = getUserFromToken();
   const isLoggedIn = !!user;
 
-  const userRole = user ? user.rol : null; // Accedemos al rol (ADMIN o USER)
+  const userRole = user ? user.rol : null;
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -51,8 +39,12 @@ const Header = () => {
           className="flex items-center space-x-3 cursor-pointer"
           onClick={() => window.location.href = "/"}
         >
-          <span className="text-orange-500 text-3xl font-bold">🐾</span>
-          <span className="text-2xl font-semibold text-gray-900 dark:text-white">PetAdopt</span>
+          <img
+            src="https://i.ibb.co/3mLVtRzk/logo-removebg-preview.png"
+            alt="Logo PetAdopt"
+            className="h-12 w-auto object-contain"
+          />
+
         </div>
 
         <nav className="hidden md:flex space-x-8 text-base font-medium text-gray-700">
@@ -66,7 +58,6 @@ const Header = () => {
             <>
               <span className="text-gray-700 dark:text-white font-semibold hidden md:inline">
                 👤 ¡Hola, {user.name}!
-                {userRole === 'ADMIN' ? " (Administrador)" : " (Usuario)"}
               </span>
               {userRole === 'ADMIN' && (
                 <Link

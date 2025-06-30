@@ -5,13 +5,11 @@ const PetCard = ({ mascota, isImagePreloaded = false }) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(isImagePreloaded);
 
-  // Función mejorada para validar URLs de Contentful
   const isValidImageUrl = (url) => {
     if (!url) return false;
     
     try {
-      new URL(url); // Verifica que sea una URL válida
-      // Acepta URLs de Contentful (ctfassets.net) o con extensiones de imagen
+      new URL(url); 
       return url.includes('images.ctfassets.net') || 
              /\.(jpe?g|png|webp|gif|svg)$/i.test(url);
     } catch {
@@ -19,10 +17,9 @@ const PetCard = ({ mascota, isImagePreloaded = false }) => {
     }
   };
 
-  // Optimiza la URL de Contentful (opcional)
   const getOptimizedImageUrl = (url) => {
     if (url.includes('images.ctfassets.net')) {
-      return `${url}?w=500&h=500&fit=fill&q=80`; // Parámetros de optimización
+      return `${url}?w=500&h=500&fit=fill&q=80`; 
     }
     return url;
   };
@@ -46,7 +43,6 @@ const PetCard = ({ mascota, isImagePreloaded = false }) => {
         hover:opacity-90 cursor-pointer
         transform hover:scale-[1.05]">
         
-        {/* Contenedor de la imagen */}
         <div className="relative bg-gray-100 h-48">
           {isValidImageUrl(mascota.imagen) && !imageError ? (
             <>

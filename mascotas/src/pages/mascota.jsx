@@ -9,7 +9,6 @@ const PetDetail = () => {
   const { mascotas, loading, error } = useMascotas();
   const [fullscreenImage, setFullscreenImage] = useState(null);
 
-  // Buscar la mascota específica
   const mascota = mascotas.find(m => m.id.toString() === id);
 
   if (loading) {
@@ -111,14 +110,10 @@ const PetDetail = () => {
             >
               <PhoneCall className="w-4 h-4" /> Contactar por WhatsApp
             </a>
-            <button className="w-full flex justify-center items-center gap-2 border border-gray-300 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition">
-              <Heart className="w-4 h-4" /> Guardar como favorito
-            </button>
           </div>
         </div>
       </section>
 
-      {/* Modal para imagen en pantalla completa */}
       {fullscreenImage && (
         <div 
           className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"

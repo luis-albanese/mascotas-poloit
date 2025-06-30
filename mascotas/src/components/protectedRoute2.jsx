@@ -3,17 +3,17 @@ import { Navigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 const ProtectedRoute2 = ({ children }) => {
-  const [alertShown, setAlertShown] = useState(false); // Estado para controlar si el alert ya se mostró
+  const [alertShown, setAlertShown] = useState(false); 
 
   const token = localStorage.getItem('accessToken');
 
   useEffect(() => {
     if (!token && !alertShown) {
-      // Mostrar alert solo una vez
+     
       alert("Debes iniciar sesión para acceder a esta página.");
-      setAlertShown(true); // Marcar como mostrado
+      setAlertShown(true);
     }
-  }, [token, alertShown]); // Solo se ejecuta cuando el token cambia
+  }, [token, alertShown]); 
 
   if (!token) {
     return <Navigate to="/login" replace />;

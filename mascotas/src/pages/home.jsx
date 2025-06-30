@@ -7,7 +7,7 @@ import { useRandomMascotas } from '../utils/getRandomMascotas';
 
 function Home() {
   const { mascotas, loading, error } = useMascotas();
-  const randomMascotas = useRandomMascotas(mascotas, 6); // Usamos el hook
+  const randomMascotas = useRandomMascotas(mascotas, 6); 
 
   return (
     <div className="font-sans min-h-screen bg-white flex flex-col items-center">

@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { PawPrint } from 'lucide-react';
-import axios from 'axios'; 
+import { PawPrint, Eye, EyeOff } from 'lucide-react';
+import axios from 'axios';
 
 const Register = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [popup, setPopup] = useState({ type: '', message: '' });
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -12,6 +16,13 @@ const Register = () => {
     confirmPassword: '',
     phone: ''
   });
+
+  useEffect(() => {
+    if (popup.message) {
+      const timer = setTimeout(() => setPopup({ type: '', message: '' }), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [popup]);
 
   const handleChange = (e) => {
     setForm({
@@ -23,28 +34,24 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validación básica
     if (form.password !== form.confirmPassword) {
-      alert('Las contraseñas no coinciden');
+      setPopup({ type: 'error', message: 'Las contraseñas no coinciden' });
       return;
     }
 
     try {
       const { name, email, password, phone } = form;
-      const response = await axios.post('http://localhost:2010/api/users/create', {
+      await axios.post('http://localhost:2010/api/users/create', {
         name,
         email,
         password,
         phone
       });
 
-      alert('Usuario creado correctamente');
-      console.log(response.data);
-      navigate('/login');
-
+      setPopup({ type: 'success', message: 'Cuenta creada correctamente 🎉' });
+      setTimeout(() => navigate('/login'), 2500);
     } catch (error) {
-      console.error(error);
-      alert('Hubo un error al registrar el usuario');
+      setPopup({ type: 'error', message: 'Error al registrar el usuario. Verifica los datos.' });
     }
   };
 
@@ -57,7 +64,17 @@ const Register = () => {
 
         <h2 className="text-center text-2xl font-semibold text-gray-900 mb-6">Crea tu cuenta</h2>
 
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        {popup.message && (
+          <div
+            className={`mb-4 text-white px-4 py-2 rounded-md text-sm ${
+              popup.type === 'error' ? 'bg-red-500' : 'bg-green-500'
+            }`}
+          >
+            {popup.message}
+          </div>
+        )}
+
+        <form  autoComplete="off" className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="text"
             name="name"
@@ -65,7 +82,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Nombre completo"
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500"
           />
           <input
             type="email"
@@ -74,7 +91,7 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Correo electrónico"
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500"
           />
           <input
             type="text"
@@ -83,26 +100,46 @@ const Register = () => {
             onChange={handleChange}
             placeholder="Teléfono"
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500"
           />
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            placeholder="Contraseña"
-            required
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
-          <input
-            type="password"
-            name="confirmPassword"
-            value={form.confirmPassword}
-            onChange={handleChange}
-            placeholder="Confirmar contraseña"
-            required
-            className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-          />
+
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              name="password"
+              value={form.password}
+              onChange={handleChange}
+              placeholder="Contraseña"
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
+
+          <div className="relative">
+            <input
+              type={showConfirm ? 'text' : 'password'}
+              name="confirmPassword"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              placeholder="Confirmar contraseña"
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirm(!showConfirm)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+            >
+              {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
 
           <button
             type="submit"

@@ -1,6 +1,6 @@
 import React from 'react';
 
-function AboutUs() {  // <-- Cambiado a PascalCase
+function AboutUs() {
     return (
         <section className="bg-white py-16 px-6 text-center">
             <div className="max-w-4xl mx-auto">
@@ -17,10 +17,11 @@ function AboutUs() {  // <-- Cambiado a PascalCase
                     Somos un grupo de amantes de los animales comprometidos con reducir el abandono y promover la adopción responsable. Trabajamos en conjunto con refugios y voluntarios de todo el país para asegurar el bienestar de cada mascota.
                 </p>
                 <img
-                    src="https://media.discordapp.net/attachments/731770161425809459/1383231293697032272/1933671850875277312.png?ex=684e0a07&is=684cb887&hm=7e3f7b2a5550436c4d35f0ab095dae5cab5d17191197fca5b00c031468674541&=&format=webp&quality=lossless" 
+                    src="/petadopt.jpg"
                     alt="Equipo PetAdopt"
                     className="rounded-2xl shadow-lg mx-auto mb-8 w-full max-w-md"
                 />
+
                 <p className="text-gray-600 italic mb-8">
                     “Salvar una vida no cambia el mundo, pero sí cambia el mundo de esa vida.”
                 </p>
@@ -32,4 +33,4 @@ function AboutUs() {  // <-- Cambiado a PascalCase
     );
 }
 
-export default AboutUs;  // <-- También actualizado aquí
+export default AboutUs; 

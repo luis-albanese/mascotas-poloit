@@ -7,7 +7,7 @@ const MascotasPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const mascotasPerPage = 8;
 
-  // Calcular las mascotas para la página actual
+ 
   const indexOfLastMascota = currentPage * mascotasPerPage;
   const indexOfFirstMascota = indexOfLastMascota - mascotasPerPage;
   const currentMascotas = mascotas.slice(indexOfFirstMascota, indexOfLastMascota);
@@ -54,7 +54,6 @@ const MascotasPage = () => {
         ))}
       </div>
 
-      {/* Paginación */}
       {mascotas.length > mascotasPerPage && (
         <div className="flex justify-center mt-8">
           <nav className="inline-flex rounded-md shadow">

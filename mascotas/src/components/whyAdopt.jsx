@@ -1,13 +1,41 @@
-import React from 'react';
-import { CheckCircle } from "lucide-react";
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-const WhyAdopt = () => {
+const RequireLoginPopup = ({ show, setShow }) => {
+  useEffect(() => {
+    if (show) {
+      const timer = setTimeout(() => setShow(false), 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [show, setShow]);
+
+  return show ? (
+    <div className="fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded shadow-lg z-50">
+      🔒 Debes iniciar sesión para realizar esta acción.
+    </div>
+  ) : null;
+};
+
+export default function WhyAdopt() {
+  const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
+
+  const handleClick = () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      setShowPopup(true);
+      return;
+    }
+
+    navigate('/mascotas-adopcion');
+  };
+
   return (
     <section className="bg-[#fef6ee] w-full py-12">
+      <RequireLoginPopup show={showPopup} setShow={setShowPopup} />
+
       <div className="max-w-7xl mx-auto px-6 w-full">
         <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-
           <div className="md:w-1/2 text-left">
             <h2 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
               ¿Por qué adoptar?
@@ -18,37 +46,36 @@ const WhyAdopt = () => {
             </p>
             <ul className="space-y-4 text-gray-800 text-base">
               <li className="flex items-center gap-3">
-                <CheckCircle className="text-orange-500 w-5 h-5" />
-                Salvas una vida
+                <span className="text-orange-500">✔</span> Salvas una vida
               </li>
               <li className="flex items-center gap-3">
-                <CheckCircle className="text-orange-500 w-5 h-5" />
-                Reduces la sobrepoblación de animales
+                <span className="text-orange-500">✔</span> Reduces la sobrepoblación de animales
               </li>
               <li className="flex items-center gap-3">
-                <CheckCircle className="text-orange-500 w-5 h-5" />
-                Ganas un compañero leal
+                <span className="text-orange-500">✔</span> Ganas un compañero leal
               </li>
             </ul>
 
-            {/* Agregamos el botón para redirigir a la página de adopción */}
-            <Link
-              to="/mascotas-adopcion"
+            <button
+              onClick={handleClick}
               className="inline-block bg-orange-500 text-white px-6 py-3 mt-6 rounded-lg hover:bg-orange-600 transition"
             >
               Pon en adopción una mascota
-            </Link>
+            </button>
           </div>
 
           <div className="md:w-1/2 w-full flex justify-center">
-            <div className="bg-gray-200 w-full max-w-md h-[300px] md:h-[350px] rounded-xl flex items-center justify-center shadow-lg">
-              <span className="text-gray-500 text-sm">[Imagen o ilustración aquí]</span>
+            <div className="bg-white w-full max-w-md h-[350px] md:h-[350px] rounded-xl overflow-hidden shadow-lg">
+              <img
+                 src="/logo.png"
+                alt="Equipo PetAdopt"
+                className="w-full h-full object-contain"
+              />
             </div>
+
           </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default WhyAdopt;
+}

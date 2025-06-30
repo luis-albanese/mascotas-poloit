@@ -23,7 +23,6 @@ const Hero = () => {
   }, [mascotaAleatoria]);
 
   const handleImageLoad = () => {
-    console.log("Imagen cargada exitosamente");
     setImageStatus('loaded');
   };
 
@@ -32,12 +31,10 @@ const Hero = () => {
     setImageStatus('error');
   };
 
-  // Función mejorada para validar URLs de Contentful y otras
   const isValidImageUrl = (url) => {
     if (!url) return false;
     try {
-      new URL(url); // Verifica que sea una URL válida
-      // Acepta URLs de Contentful o con extensiones de imagen
+      new URL(url); 
       return url.includes('images.ctfassets.net') || 
              /\.(jpe?g|png|webp|gif|svg)$/i.test(url);
     } catch {
@@ -45,10 +42,9 @@ const Hero = () => {
     }
   };
 
-  // Optimiza la URL de Contentful
   const getOptimizedImageUrl = (url) => {
     if (url?.includes('images.ctfassets.net')) {
-      // Añade parámetros de optimización para Contentful
+      
       return `${url}?w=800&h=600&fit=fill&q=80`;
     }
     return url;
@@ -60,7 +56,6 @@ const Hero = () => {
         <div className="max-w-7xl mx-auto px-6 w-full">
           <div className="flex flex-col md:flex-row items-center justify-between gap-10">
 
-            {/* Contenido de texto */}
             <div className="md:w-1/2 text-left">
               <h1 className="text-4xl font-bold text-gray-900 mb-6 leading-tight">
                 Encuentra a tu compañero perfecto
@@ -79,7 +74,6 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Placeholder solo para la imagen */}
             <div className="md:w-1/2 w-full flex justify-center">
               <div className="w-full max-w-md h-[300px] md:h-[350px] bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl animate-pulse flex items-center justify-center">
                 <svg

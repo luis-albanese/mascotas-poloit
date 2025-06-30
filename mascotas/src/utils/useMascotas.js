@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Caché para datos y estado de imágenes precargadas
 const mascotasCache = {
   data: null,
   promise: null,
   imagesLoaded: new Set()
 };
 
-// Función para precargar imágenes
 const precargarImagenes = (mascotas) => {
   mascotas.forEach(mascota => {
     if (mascota.imagen && !mascotasCache.imagesLoaded.has(mascota.imagen)) {
@@ -19,7 +17,6 @@ const precargarImagenes = (mascotas) => {
   });
 };
 
-// Función para resetear el caché
 export const resetMascotasCache = () => {
   mascotasCache.data = null;
   mascotasCache.promise = null;
@@ -40,18 +37,20 @@ export const useMascotas = () => {
     if (!mascotasCache.promise) {
       mascotasCache.promise = axios.get('http://localhost:2010/api/pets')
         .then(response => {
-          const formattedMascotas = response.data.pets.map((pet, index) => ({
-            id: pet.id || index,
-            nombre: pet.name,
-            imagen: pet.image,
-            edad: `${pet.age} años`,
-            genero: pet.gender || 'Desconocido',
-            tamaño: pet.size,
-            tipo: pet.race.toLowerCase().includes('gato') ? 'Gato' : 'Perro',
-            ubicacion: pet.location || 'Sin ubicación',
-            descripcion: `${pet.race}, color ${pet.color}`
-          }));
-          
+          const formattedMascotas = response.data.pets
+            .map((pet, index) => ({
+              id: pet.id || index,
+              nombre: pet.name,
+              imagen: pet.image,
+              edad: `${pet.age} años`,
+              genero: pet.gender || 'Desconocido',
+              tamaño: pet.size,
+              tipo: pet.race.toLowerCase().includes('gato') ? 'Gato' : 'Perro',
+              ubicacion: pet.location || 'Sin ubicación',
+              descripcion: `${pet.race}, color ${pet.color}`
+            }))
+            .sort((a, b) => b.id - a.id); //  Orden por ID descendente
+
           mascotasCache.data = formattedMascotas;
           precargarImagenes(formattedMascotas);
           return formattedMascotas;
