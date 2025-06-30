@@ -1,17 +1,23 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MapPin, PawPrint, Calendar, PhoneCall, X } from "lucide-react";
 import { useMascotas } from "../utils/useMascotas";
 import { jwtDecode } from "jwt-decode";
 import React from "react";
-
 const PetDetail = () => {
   const { id } = useParams();
-  const [activeTab, setActiveTab] = useState("sobre");
   const { mascotas, loading, error } = useMascotas();
   const [fullscreenImage, setFullscreenImage] = useState(null);
-  const [adoptado, setAdoptado] = useState(false);
   const [mensaje, setMensaje] = useState("");
+  const [petStatus, setPetStatus] = useState(null);
+
+  const mascota = mascotas.find((m) => m.id.toString() === id);
+
+  useEffect(() => {
+    if (mascota) {
+      setPetStatus(mascota.status); // 👈 sincronizamos el estado inicial
+    }
+  }, [mascota]);
 
   const userId = useMemo(() => {
     try {
@@ -21,18 +27,38 @@ const PetDetail = () => {
         return decoded.userId || decoded.id;
       }
     } catch (error) {
-      console.error("Error al decodificar token", error);
+      console.error("Error al decodificar token:", error);
     }
     return null;
   }, []);
 
-  useEffect(() => {
+  const handleAdopt = async () => {
     if (!userId) {
-      setMensaje("Debe iniciar sesión para adoptar.");
+      setMensaje("Debes iniciar sesión para adoptar.");
+      return;
     }
-  }, [userId]);
 
-  const mascota = mascotas.find((m) => m.id.toString() === id);
+    try {
+      const response = await fetch(
+        `http://localhost:2010/api/pets/adopt/${mascota.id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
+        }
+      );
+
+      if (!response.ok) throw new Error("No se pudo adoptar la mascota");
+
+      setPetStatus("INACTIVE"); // 👈 actualizamos status localmente
+      setMensaje("¡Adoptaste exitosamente a esta mascota!");
+    } catch (err) {
+      console.error(err);
+      setMensaje("Ocurrió un error al intentar adoptar.");
+    }
+  };
 
   if (loading) {
     return <div className="text-center py-10">Cargando mascotas...</div>;
@@ -49,34 +75,6 @@ const PetDetail = () => {
   if (!mascota) {
     return <div className="text-center py-10">Mascota no encontrada</div>;
   }
-
-  // Mostrar mensaje si no hay userId y bloquear UI de adopción
-  if (!userId) {
-    return <div className="text-center py-10 text-red-500">{mensaje}</div>;
-  }
-
-  const handleAdopt = async () => {
-    try {
-      const response = await fetch(
-        `http://localhost:2010/api/pets/adopt/${mascota.id}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId }),
-        }
-      );
-
-      if (!response.ok) throw new Error("No se pudo adoptar la mascota");
-
-      setAdoptado(true);
-      setMensaje("¡Adoptaste exitosamente a esta mascota!");
-    } catch (err) {
-      setMensaje("Ocurrió un error al intentar adoptar.");
-      console.error(err);
-    }
-  };
 
   return (
     <>
@@ -130,40 +128,6 @@ const PetDetail = () => {
             </div>
           </div>
 
-          <div className="flex border-b mt-6">
-            {["sobre", "detalles", "dueño"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-4 py-2 text-sm font-medium capitalize ${
-                  activeTab === tab
-                    ? "text-gray-900 border-b-2 border-orange-500"
-                    : "text-gray-500"
-                }`}
-              >
-                {tab === "sobre"
-                  ? `Sobre ${mascota.nombre}`
-                  : tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            ))}
-          </div>
-
-          {activeTab === "sobre" && (
-            <p className="text-gray-700 text-base">{mascota.descripcion}</p>
-          )}
-          {activeTab === "detalles" && (
-            <ul className="text-gray-700 list-disc list-inside">
-              <li>Género: {mascota.genero}</li>
-              <li>Tamaño: {mascota.tamaño}</li>
-              <li>Vacunas: {mascota.vacunas || "No informado"}</li>
-            </ul>
-          )}
-          {activeTab === "dueño" && (
-            <div className="text-gray-700">
-              <p>Contacto: {mascota.contacto || "No disponible"}</p>
-            </div>
-          )}
-
           <div className="mt-6 space-y-3">
             <a
               href={`https://wa.me/${mascota.whatsapp || "1234567890"}`}
@@ -173,18 +137,20 @@ const PetDetail = () => {
             >
               <PhoneCall className="w-4 h-4" /> Contactar por WhatsApp
             </a>
+
             <button
               onClick={handleAdopt}
-              disabled={adoptado}
+              disabled={petStatus === "INACTIVE"}
               className={`w-full inline-flex justify-center items-center gap-2 py-3 px-4 rounded-lg font-semibold transition ${
-                adoptado
+                petStatus === "INACTIVE"
                   ? "bg-gray-400 text-white cursor-not-allowed"
                   : "bg-green-500 text-white hover:bg-green-600"
               }`}
             >
               <PawPrint className="w-4 h-4" />
-              {adoptado ? "Adoptado" : "ADOPTAR"}
+              {petStatus === "INACTIVE" ? "Adoptado" : "ADOPTAR"}
             </button>
+
             {mensaje && (
               <p className="text-sm text-center text-green-600 font-medium">
                 {mensaje}

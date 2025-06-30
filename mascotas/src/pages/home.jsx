@@ -45,6 +45,24 @@ function Home() {
       </section>
 
       <WhyAdopt />
+
+      <section className="w-full bg-orange-100 mt-12 py-8">
+        <div className="max-w-4xl mx-auto text-center px-4">
+          <img
+            src="https://static.wixstatic.com/media/f7a32c_1e4c47160de94f15b091352c78489b13~mv2.png/v1/fill/w_183,h_58,al_c,lg_1,q_85,enc_avif,quality_auto/logo.png"
+            alt="Logo PoloIT"
+            className="mx-auto mb-4 w-48 h-auto"
+          />
+          <h3 className="text-xl md:text-2xl font-semibold text-orange-700 mb-2">
+            Gracias PoloIT 🧡
+          </h3>
+          <p className="text-gray-700">
+            Este proyecto fue desarrollado como parte del desafío técnico
+            propuesto por PoloIT. ¡Gracias por la oportunidad de crecer,
+            aprender y construir algo con propósito!
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

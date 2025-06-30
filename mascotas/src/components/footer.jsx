@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Footer = () => {
   return (
@@ -7,11 +7,21 @@ const Footer = () => {
         <div className="flex items-center gap-2 mb-4 md:mb-0">
           <span className="font-semibold text-orange-500">🐾 PetAdopt</span>
           <span>© 2025 PetAdopt. Todos los derechos reservados.</span>
+          <span>Proyecto realizado para PoloIT</span>
         </div>
         <div className="flex gap-4">
-          <a href="#" className="hover:underline">Términos</a>
-          <a href="#" className="hover:underline">Privacidad</a>
-          <a href="https://www.instagram.com/petadopt_ok/" className="hover:underline">Contacto</a>
+          <a href="#" className="hover:underline">
+            Términos
+          </a>
+          <a href="#" className="hover:underline">
+            Privacidad
+          </a>
+          <a
+            href="https://www.instagram.com/petadopt_ok/"
+            className="hover:underline"
+          >
+            Contacto
+          </a>
         </div>
       </div>
     </footer>
