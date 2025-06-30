@@ -47,7 +47,9 @@ export const useMascotas = () => {
               tamaño: pet.size,
               tipo: pet.race.toLowerCase().includes('gato') ? 'Gato' : 'Perro',
               ubicacion: pet.location || 'Sin ubicación',
-              descripcion: `${pet.race}, color ${pet.color}`
+              descripcion: `${pet.race}, color ${pet.color}`,
+              user: pet.user || null,       // para saber quién la adoptó
+              status: pet.status || 'ACTIVE' // para saber si ya fue adoptada
             }))
             .sort((a, b) => b.id - a.id); //  Orden por ID descendente
 

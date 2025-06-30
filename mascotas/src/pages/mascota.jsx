@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { MapPin, PawPrint, Calendar, PhoneCall, X } from "lucide-react";
 import { useMascotas } from "../utils/useMascotas";
@@ -10,8 +10,33 @@ const PetDetail = () => {
   const [fullscreenImage, setFullscreenImage] = useState(null);
   const [mensaje, setMensaje] = useState("");
   const [petStatus, setPetStatus] = useState(null);
+  const [esAdoptadaPorUsuario, setEsAdoptadaPorUsuario] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   const mascota = mascotas.find((m) => m.id.toString() === id);
+  console.log("Mascota detallada:", mascota); // 👈 esto
+
+  useEffect(() => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        const decoded = jwtDecode(token);
+        const id = decoded.userId || decoded.id;
+        setUserId(id);
+      }
+    } catch (error) {
+      console.error("Error al decodificar token:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (mascota && userId) {
+      const adoptanteId = mascota.user?.id; // 👈 usa el user.id traído del backend
+      setEsAdoptadaPorUsuario(adoptanteId === userId && mascota.status === "INACTIVE");
+    }
+  }, [mascota, userId, petStatus]);
+
+
 
   useEffect(() => {
     if (mascota) {
@@ -19,18 +44,6 @@ const PetDetail = () => {
     }
   }, [mascota]);
 
-  const userId = useMemo(() => {
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        const decoded = jwtDecode(token);
-        return decoded.userId || decoded.id;
-      }
-    } catch (error) {
-      console.error("Error al decodificar token:", error);
-    }
-    return null;
-  }, []);
 
   const handleAdopt = async () => {
     if (!userId) {
@@ -52,8 +65,19 @@ const PetDetail = () => {
 
       if (!response.ok) throw new Error("No se pudo adoptar la mascota");
 
-      setPetStatus("INACTIVE"); // 👈 actualizamos status localmente
+      const updatedPet = await fetch(`http://localhost:2010/api/pets/${mascota.id}`).then(res => res.json());
+
+      const pet = updatedPet.pet; // 👈 si el backend devuelve { pet: {...} }
+
+      mascota.status = pet.status;
+      mascota.user = pet.user;
+      setPetStatus(pet.status);
+      setEsAdoptadaPorUsuario(pet.user?.id === userId);
+
       setMensaje("¡Adoptaste exitosamente a esta mascota!");
+
+
+
     } catch (err) {
       console.error(err);
       setMensaje("Ocurrió un error al intentar adoptar.");
@@ -141,21 +165,27 @@ const PetDetail = () => {
             <button
               onClick={handleAdopt}
               disabled={petStatus === "INACTIVE"}
-              className={`w-full inline-flex justify-center items-center gap-2 py-3 px-4 rounded-lg font-semibold transition ${
-                petStatus === "INACTIVE"
-                  ? "bg-gray-400 text-white cursor-not-allowed"
-                  : "bg-green-500 text-white hover:bg-green-600"
-              }`}
+              className={`w-full inline-flex justify-center items-center gap-2 py-3 px-4 rounded-lg font-semibold transition ${petStatus === "INACTIVE"
+                ? "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-green-500 text-white hover:bg-green-600"
+                }`}
             >
               <PawPrint className="w-4 h-4" />
               {petStatus === "INACTIVE" ? "Adoptado" : "ADOPTAR"}
             </button>
 
-            {mensaje && (
+            {esAdoptadaPorUsuario && (
+              <p className="text-sm text-center text-green-600 font-medium">
+                Esta mascota fue adoptada por vos ❤️
+              </p>
+            )}
+
+            {mensaje && !esAdoptadaPorUsuario && (
               <p className="text-sm text-center text-green-600 font-medium">
                 {mensaje}
               </p>
             )}
+
           </div>
         </div>
       </section>
