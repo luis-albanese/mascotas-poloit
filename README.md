@@ -9,12 +9,12 @@
 
 ## 🐶 Mascotas en Adopción
 
-![Listado de mascotas](public/mascotas-list.png)
+![Listado de mascotas](mascotas/public/mascotas-list.png)
 
 
 ## 📝 Registro de usuario
 
-![Formulario de registro](public/register.png)
+![Formulario de registro](mascotas/public/register.png)
 
 
 ## 🚀 Tecnologías utilizadas
