@@ -19,7 +19,6 @@ const Header = () => {
     }
   };
 
-
   const user = getUserFromToken();
   const isLoggedIn = !!user;
 
@@ -28,7 +27,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    navigate("/login");
+    navigate("/login");  
   };
 
   return (
@@ -37,20 +36,19 @@ const Header = () => {
 
         <div
           className="flex items-center space-x-3 cursor-pointer"
-          onClick={() => window.location.href = "/"}
+          onClick={() => navigate("/")} 
         >
           <img
             src="https://i.ibb.co/3mLVtRzk/logo-removebg-preview.png"
             alt="Logo PetAdopt"
             className="h-12 w-auto object-contain"
           />
-
         </div>
 
         <nav className="hidden md:flex space-x-8 text-base font-medium text-gray-700">
-          <a href="/" className="dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Inicio</a>
-          <a href="/mascotas" className="dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Mascotas</a>
-          <a href="/sobre-nosotros" className="dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Sobre Nosotros</a>
+          <Link to="/" className="dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Inicio</Link>
+          <Link to="/mascotas" className="dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Mascotas</Link>
+          <Link to="/sobre-nosotros" className="dark:text-white font-bold hover:text-orange-500 transition-colors duration-200">Sobre Nosotros</Link>
         </nav>
 
         <div className="flex items-center space-x-4">
