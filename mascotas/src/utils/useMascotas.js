@@ -35,7 +35,7 @@ export const useMascotas = () => {
     }
 
     if (!mascotasCache.promise) {
-      mascotasCache.promise = axios.get('http://localhost:2010/api/pets')
+      mascotasCache.promise = axios.get('https://api-pet-adopt.onrender.com/api/pets')
         .then(response => {
           const formattedMascotas = response.data.pets
             .map((pet, index) => ({

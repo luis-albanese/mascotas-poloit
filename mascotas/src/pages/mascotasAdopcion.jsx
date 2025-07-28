@@ -71,7 +71,7 @@ const MascotasAdopcion = () => {
     }
 
     try {
-      await axios.post('http://localhost:2010/api/pets/create', {
+      await axios.post('https://api-pet-adopt.onrender.com/api/pets/create', {
 
         name: nombre,
         race: raza,

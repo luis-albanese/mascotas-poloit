@@ -43,7 +43,7 @@ function Dashboard() {
 
   const handleDeleteConfirmado = async () => {
     try {
-      await axios.delete(`http://localhost:2010/api/pets/${mascotaAEliminar.id}`);
+      await axios.delete(`https://api-pet-adopt.onrender.com/api/pets/${mascotaAEliminar.id}`);
       resetMascotasCache();
       setMensaje('Mascota eliminada correctamente');
       setTipoMensaje('success');
@@ -64,7 +64,7 @@ function Dashboard() {
 
   const handleSave = async (id) => {
     try {
-      await axios.patch(`http://localhost:2010/api/pets/${id}`, {
+      await axios.patch(`https://api-pet-adopt.onrender.com/api/pets/${id}`, {
         name: nuevoNombre
       });
       resetMascotasCache();

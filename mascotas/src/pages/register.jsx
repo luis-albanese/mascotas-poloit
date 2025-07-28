@@ -41,7 +41,7 @@ const Register = () => {
 
     try {
       const { name, email, password, phone } = form;
-      await axios.post('http://localhost:2010/api/users/create', {
+      await axios.post('https://api-pet-adopt.onrender.com/api/users/create', {
         name,
         email,
         password,
